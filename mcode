@@ -1,0 +1,200 @@
+#Find Beta(3,5), Gamma(5)
+Python Code:
+# beta and gamma functions
+from sympy import beta , gamma
+m= input ('m :');
+n= input ('n :');
+m= float (m);
+n= float (n);
+s= beta (m,n);
+t= gamma (n)
+print ('gamma (',n,') is %3.3f '%t)
+print ('Beta (',m,',',n,') is %3.3f '%s)
+
+#Verify that Beta(m, n) = Gamma(m)Gamma(n)/Gamma(m + n) for m=5 and n=7
+Python Code:
+from sympy import beta , gamma
+m=5;
+n=7;
+m= float (m);
+n= float (n);
+s= beta (m,n);
+t=( gamma (m)* gamma (n))/ gamma (m+n);
+print('LHS = Beta(m,n)=',s,'\nRHS = Gamma(m)*Gamma(n))/Gamma(m+n)=',t)
+if (abs (s-t)<=0.00001 ):
+ print ('Beta and Gamma are related ')
+else :
+ print ('Given values are wrong ')
+
+
+# To find gradient of ϕ = x^2y + 2xz - 4.
+Python Code:
+#To find gradient of scalar point function.
+from sympy . vector import *
+from sympy import symbols
+N= CoordSys3D ('N') # Setting the coordinate system
+x,y,z= symbols ('x y z')
+A=N.x ** 2*N.y+2*N.x*N.z-4
+# Variables x,y,z to be used with coordinate system N
+delop =Del () #Del operator
+display ( delop (A)) #Del operator applied to A
+gradA = gradient (A) # Gradient function is used
+print (f"\n Gradient of {A} is \n")
+ display ( gradA )
+
+
+#: To find divergence of F⃗ = 𝑥2𝑦𝑧 𝑖̂ + 𝑦2𝑧𝑥 𝑗̂ + 𝑧2𝑥𝑦 𝑘̂.
+Python Code:
+#To find divergence of a vector point function
+from sympy . vector import *
+from sympy import symbols
+N= CoordSys3D ('N')
+x,y,z= symbols ('x y z')
+A=N.x ** 2*N.y*N.z*N.i+N.y ** 2*N.z*N.x*N.j+N.z ** 2*N.x*N.y*N.k
+delop =Del ()
+divA = delop . dot (A)
+display ( divA )
+print (f"\n Divergence of {A} is \n")
+ display ( divergence (A))
+
+#Using Green’s theorem, evaluate ∮[(𝒙 + 𝟐𝒚)𝒅𝒙 + (𝒙 − 𝟐𝒚)𝒅𝒚], where
+c is the region bounded by coordinate axes and the line 𝒙 = 𝟏 and 𝒚 = 𝟏.
+Python Code:
+from sympy import *
+var ('x,y')
+p=x+2*y
+q=x-2*y
+f= diff (q,x)- diff (p,y)
+soln = integrate (f,[x,0,1],[y,0,1])
+ print ("I=",soln )
+
+#Solve: 𝒅𝒚/𝒅𝒙 − 2𝑦 = 3𝑒^𝑥, with 𝑦(0) = 0 using Taylor series method at
+𝑥 = 0.1(0.1)0.3.
+Python Code:
+import numpy as np
+from numpy import array
+def taylor (deriv ,x,y,xStop ,h):
+ X = []
+ Y = []
+ X. append (x)
+#append() function inserts a single element into an existing list
+ Y. append (y)
+ while x < xStop : # Loop over integration steps
+ D = deriv (x,y) # Derivatives of y
+ H = 1.0
+ for j in range (3): # j runs from 0 to 2; Building Taylor series
+ H = H*h/(j + 1)
+ y = y + D[j]*H
+ x = x + h
+ X. append (x)
+ Y. append (y)
+ return array (X),array (Y) # Convert lists into arrays
+# deriv = user - supplied function that returns derivatives in the 4 x n array
+def deriv (x,y):
+ D = np.zeros((4,1))
+#np.zeros() function returns a new array of given shape and type, with zeros
+D[0] = [2*y[0] + 3*np.exp(x)]
+ D[1] = [4*y[0]+ 9*np.exp(x)]
+ D[2] = [8*y[0]+ 21*np.exp(x)]
+ D[3] = [16*y[0]+ 45*np.exp(x)]
+ return D
+x = 0.0 # Initial value of x = x0
+xStop = 0.3 # last value of x = xn
+y = array ([0.0]) # Initial value of y = y0
+h = 0.1 # Step size
+X,Y = taylor (deriv ,x,y,xStop ,h)
+print ("The required values by Taylor's method are :\n at x= %0.2f , y=%0.5f,
+\n at x=%0.2f , y=%0.5f,\n at x = %0.2f, y=%0.5f ,\n at x = %0.2f, y=%0.5f."
+%(X[0],Y[0],X[1],Y[1],X[2],Y[2],X[3],Y[3] ))
+
+
+#Solve by modified Euler’s method:𝑦′ = 𝑥2 + 𝑦, 𝑦(0) = 1, ℎ = 0.05, 𝑥 = 0(0.1)0.2.
+Python Code:
+import numpy as np
+import matplotlib . pyplot as plt
+def modified_euler (f, x0 , y0 , h, n):
+ x = np. zeros (n+1)
+ y = np. zeros (n+1)
+ x[0] = x0
+ y[0] = y0
+ for i in range (n):
+ x[i+1] = x[i] + h
+ k1 = h * f(x[i], y[i])
+ k2 = h * f(x[i+1], y[i] + k1)
+ y[i+1] = y[i] + 0.5 * (k1 + k2)
+ return x, y
+def f(x, y):
+ return x**2+y
+x0 = 0.0
+y0 = 1.0
+h = 0.05
+n = 2
+x, y = modified_euler (f, x0 , y0 , h, n)
+print ("The required values by Modified Euler's method are :\n at x= %0.2f ,
+y=%0.5f,\n at x= %0.2f , y=%0.5f,\n at x=%0.2f , y=%0.5f" %(x[0],y[0],x[1],y[
+1],x[2],y[2]))
+# Plotting the results
+plt . plot (x, y, 'bo-')
+plt . xlabel ('x')
+plt . ylabel ('y')
+plt . title ('Solution of dy/dx = x^2+y using Modified Euler \'s Method ')
+plt . grid ( True )
+plt . show ()
+
+
+#Apply the Runge Kutta method to find the solution of
+𝑑𝑦/𝑑𝑥 = 𝟏 + 𝑦/𝑥 at 𝑦(𝟐) taking ℎ = 𝟎. 𝟐. Given that 𝑦(𝟏) = 𝟐.
+Python Code:
+from sympy import *
+import numpy as np
+def RungeKutta (g,x0 ,h,y0 ,xn):
+ x,y= symbols ('x,y')
+ f= lambdify ([x,y],g)
+ print('Result by RK4 method:')
+ print ('y( %3.3f'%x0,') = %3.3f '%y0)
+ xt=x0+h
+ Y=[y0]
+ while xt<=xn:
+ k1=h*f(x0 ,y0)
+ k2=h*f(x0+h/2, y0+k1/2)
+ k3=h*f(x0+h/2, y0+k2/2)
+ k4=h*f(x0+h, y0+k3)
+ y1=y0+(1/6)*(k1+2*k2+2*k3+k4)
+ Y. append (y1)
+ print ('y( %3.6f'%xt,') = %3.6f '%y1)
+ x0=xt
+ y0=y1
+ xt=xt+h
+ return np. round (Y,2)
+RungeKutta ('1+y/x',1,0.2,2,2)
+
+
+#Apply Milne’s predictor and corrector method to solve𝑑𝑦/𝑑𝑥= 𝑥^2 +𝑦^2
+at 𝑦(1.4). Given that 𝑦(1) = 2, 𝑦(1.1) = 2.2156, 𝑦(1.2) = 2.4649, 𝑦(1.3) = 2.7514.
+Use corrector formula thrice.
+Python Code:
+# Milne 's method to solve first order DE
+# Use corrector formula thrice
+x0=1
+y0=2
+y1=2.2156
+y2=2.4649
+y3=2.7514
+h=0.1
+x1=x0+h
+x2=x1+h
+x3=x2+h
+x4=x3+h
+def f(x,y):
+ return x ** 2+(y/2)
+y10 =f(x0 , y0)
+y11 =f(x1 ,y1)
+y12 =f(x2 ,y2)
+y13 =f(x3 ,y3)
+y4p =y0+(4*h/3)*(2*y11-y12+2*y13)
+print ('Predicted value of y4 is %3.3f '% y4p)
+y14 =f(x4 ,y4p );
+for i in range (1,4):
+y4=y2+(h/3)*(y14 +4*y13 +y12 );
+ print('Corrected value of y4 after \t iteration %d is \t %3.5f\t'%(i,y4))
+ y14=f(x4 ,y4);
